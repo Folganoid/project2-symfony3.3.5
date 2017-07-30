@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    {% block stylesheets %}{% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+
+    <link rel="stylesheet" href="{{ asset('css/uikit.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+    <script type="text/javascript" src="{{ asset('js/jquery-3.2.0.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/uikit.min.js') }}"></script>
+
+    {#
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootflat/2.0.4/css/bootflat.min.css">
+    #}
+
+</head>
+
+<nav class="uk-navbar">
+    <div class="uk-navbar">
+        <a href="" class="uk-navbar-brand">FGmap</a>
+        <ul class="uk-navbar-nav">
+            <li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a href="/map/{{ app.user.id }}">
+                    {% else %}
+                    <a href="/map">
+                        {% endif %}
+                        Map
+                    </a>
+            </li>
+            <li>
+                <a href="/data">
+                    My Data
+                </a>
+            </li>
+            <li>
+                <a href="/admin">
+                    Admin
+                </a>
+            </li>
+        </ul>
+
+        <ul class="uk-navbar-nav uk-navbar-flip">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li>
+                    <a href="/profile">
+                        <span class="uk-icon-user"></span>
+                        {{ app.user.username }}
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ logout_path() }}">
+                        LogOut
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="/login">
+                        Login
+                    </a>
+                </li>
+                <li>
+                    <a href="/register">
+                        Sign in
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
+
+<body>
+<div class="container">
+    {% block body %}{% endblock %}
+</div>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

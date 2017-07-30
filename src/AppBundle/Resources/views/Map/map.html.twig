@@ -1,0 +1,49 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Map:map{% endblock %}
+
+{% block body %}
+    <script type="text/javascript" src="{{ asset('js/components/slider.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/components/lightbox.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/components/slider.css') }}">
+
+    <script type="text/javascript" src="{{ asset('js/map.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/comment.js') }}"></script>
+
+    <div class="uk-container">
+        <div class="uk-tile-primary">
+            <h3 align="center">Map {{ username }}</h3>
+        </div>
+
+        <div class="uk-grid">
+            <div class="uk-width-2-3">
+                <div id="map" value="{{ user }}"></div>
+                <script async defer
+                        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEF7mhKBOcKf3DOomC3CPSq8htToAlZ84&callback=initMap">
+                </script>
+            </div>
+            <div class="uk-width-1-3">
+                <ul id="marker_list">
+                    {% for mark in markers %}
+                        <li class="marker_link" value="{{ mark.id }}" coordx="{{ mark.coordX }}" coordy="{{ mark.coordY }}">{{ mark.name }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div data-uk-slider="{infinite: false}">
+        <div class="uk-slider-container">
+            <ul id="map_slider" class="uk-slider uk-grid-width-medium-1-6 uk-grid-small">
+            </ul>
+        </div>
+        <br>
+        <div>
+            <ul id="map_comments">
+            </ul>
+        </div>
+    </div>
+
+
+
+{% endblock %}
