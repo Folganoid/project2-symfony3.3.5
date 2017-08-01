@@ -9,7 +9,7 @@ class CommentsRepository extends EntityRepository
     {
         return $this->getEntityManager()
             ->createQuery(
-                'SELECT c.id, c.content, c.date, c.rate, u.username FROM AppBundle:Comments c, AppBundle:User u WHERE c.markerId ='.$id.' AND c.userId = u.id ORDER BY c.content ASC'
+                'SELECT c.id, c.content, c.date, c.rate, u.username FROM AppBundle:Comments c, AppBundle:User u WHERE c.markerId ='.$id.' AND c.userId = u.id ORDER BY c.date DESC'
             )
             ->getArrayResult();
     }

@@ -3,13 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Comments;
-use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\BrowserKit\Request;
-use Symfony\Component\HttpFoundation\File\File;
+
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -25,6 +22,31 @@ class CommentController extends Controller
         $req = $user->findAllComments($id);
 
         return new Response(json_encode($req));
+    }
+
+    /**
+     * @Route("/send_comment", name="send_comment")
+     */
+    public function send_commentAction(Request $request)
+    {
+
+        $content = $request->request->get('data');
+        $marker = $request->request->get('marker');
+        $rate = ($request->request->get('rate') > 0) ? $request->request->get('rate') : 0;
+
+        $em = $this->getDoctrine()->getManager();
+
+        $comment = new Comments();
+        $comment->setUserId($this->getUser()->getId());
+        $comment->setMarkerId($marker);
+        $comment->setDate($this->date = new \DateTime());
+        $comment->setContent($content);
+        $comment->setRate($rate);
+
+        $em->persist($comment);
+        $em->flush();
+
+        return new Response('Saved new product with id '.$comment->getId());
     }
 
 
