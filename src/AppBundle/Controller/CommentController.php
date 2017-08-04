@@ -32,7 +32,7 @@ class CommentController extends Controller
 
         $content = $request->request->get('data');
         $marker = $request->request->get('marker');
-        $rate = ($request->request->get('rate') > 0) ? $request->request->get('rate') : 0;
+        $rate = $request->request->get('rate');
 
         $em = $this->getDoctrine()->getManager();
 

@@ -14,11 +14,6 @@ class AdminController extends Controller
      */
     public function adminAction(Request $request)
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            echo 1 + 1;
-            die;
-        }
-
         $aaa = $this->getUser();
         var_dump($aaa->getUsername());
         return new Response(

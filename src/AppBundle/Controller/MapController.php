@@ -4,22 +4,20 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Marker;
 use AppBundle\Entity\User;
-use Doctrine\ORM\Internal\Hydration\ArrayHydrator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\SerializerInterface;
 
-
-
+/**
+ * Class MapController
+ * @package AppBundle\Controller
+ */
 class MapController extends Controller
 {
-
     /**
      * @Route("/map/{user_id}", name="map")
      */
-    public function mapAction(int $user_id = 0, SerializerInterface $serializer)
+    public function mapAction(int $user_id = 0)
     {
         $user = $this->getDoctrine()->getRepository(User::class);
         $req = $user->findOneBy(
@@ -43,15 +41,6 @@ class MapController extends Controller
     {
         $markers = json_encode($this->getMarkerList($id));
         return new Response($markers);
-    }
-
-    /**
-     * @Route("/kml/{filename}", name="kml")
-     */
-    public function kmlAction($filename)
-    {
-        $file = new File( __DIR__. '/../../../web/kml/'.$filename);
-        return $this->file($file);
     }
 
     /**

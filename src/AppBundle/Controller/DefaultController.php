@@ -19,14 +19,4 @@ class DefaultController extends Controller
             'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
         ]);
     }
-
-    /**
-     * @Route("/data", name="data")
-     */
-    public function dataAction()
-    {
-        $aaa = $this->getUser();
-        var_dump($aaa);
-        die;
-    }
 }

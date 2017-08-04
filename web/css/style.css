@@ -2,3 +2,15 @@
     width: 100%;
     height: 400px;
 }
+
+.icon-img {
+    position: relative;
+    font-size: 26px;
+    top: -30px;
+    left: 10px;
+    color: lightgrey;
+}
+
+.icon-img:hover {
+    color: white;
+}

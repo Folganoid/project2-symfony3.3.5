@@ -67,6 +67,7 @@ function initMap() {
             getPics(cnt);
             getComments(cnt);
             $('#comment_val').attr('marker', cnt);
+            $('.uk-hidden').attr('class', 'uk-container');
 
             /**
              * toggle marker animation
@@ -124,9 +125,10 @@ function getComments(cnt) {
     });
 
     var list = '';
+    var totalRate = 0;
+    var totalRateCount = 0;
 
     for (i = 0; i < comArray.length; i++) {
-        // list += "<li><b>"+ comArray[i].username +"</b> - <i>(" + comArray[i].date.date + ")</i> - "+ comArray[i].content + "</li>";
 
         list += '<li><div>' +
             '<b>' + comArray[i].username + '</b>' +
@@ -134,9 +136,22 @@ function getComments(cnt) {
             '<span> ' + getStars(comArray[i].rate) + '</span>' +
             '<div class="uk-comment-body"><p>' + comArray[i].content + '</p>' +
             '</div></div></li>';
+
+        if (comArray[i].rate != 0) {
+            totalRate += comArray[i].rate;
+            totalRateCount++;
+        }
     }
 
+    $('#star_title').empty();
+    $('#marker_title').empty();
     $('#map_comments').empty();
+
+    if (totalRate != 0 && totalRateCount != 0) {
+        $('#star_title').append(getStars(totalRate/totalRateCount));
+        $('#marker_title').append((totalRate/totalRateCount).toFixed(2))
+    }
+
     $('#map_comments').append(list);
 
 }
@@ -161,7 +176,12 @@ function getPics(cnt) {
     var list = '';
 
     for (i = 0; i < picArray.length; i++) {
-        list += "<li><img src='../img/" + picArray[i].filename + "'><a href='../img/" + picArray[i].filename + "' data-uk-lightbox title='" + picArray[i].name + " (" + picArray[i].date + ")'>+</a></li>"
+        list += "<li>" +
+            "<img src='../img/" + picArray[i].filename + "'>" +
+            "<a href='../img/" + picArray[i].filename + "' data-uk-lightbox title='" + picArray[i].name +
+            " (" + picArray[i].date + ")'>" +
+            "<span class='uk-icon-plus-square-o icon-img'></span></a>" +
+            "</li>"
     }
 
     $('#map_slider').empty();

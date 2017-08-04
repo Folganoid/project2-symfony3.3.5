@@ -33,6 +33,7 @@
         </div>
     </div>
     <br>
+    <div class="uk-container uk-hidden"><b id="marker_title"></b>: <span id="star_title"></span></div>
     <div class="uk-container" data-uk-slider="{infinite: false}">
         <div class="uk-slider-container">
             <ul id="map_slider" class="uk-slider uk-grid-width-medium-1-6 uk-grid-small">
@@ -40,10 +41,11 @@
         </div>
         <br>
     </div>
-    <div class="uk-container">
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <div class="uk-container uk-hidden">
             <input id="comment_val" placeholder="Leave comment"/>
             <select id="comment_rate">
-                <option value=""></option>
+                <option value="0">&#9734;&#9734;&#9734;&#9734;&#9734;</option>
                 <option value="1">&#9733;&#9734;&#9734;&#9734;&#9734;</option>
                 <option value="2">&#9733;&#9733;&#9734;&#9734;&#9734;</option>
                 <option value="3">&#9733;&#9733;&#9733;&#9734;&#9734;</option>
@@ -51,7 +53,8 @@
                 <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
             </select>
             <button id="comment_but" class="uk-button uk-button-default">Send</button>
-    </div>
+        </div>
+    {% endif %}
     <br>
     <div class="uk-container">
         <ul id="map_comments" class="uk-comment-list"></ul>

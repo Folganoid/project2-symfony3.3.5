@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Marker
@@ -23,15 +24,21 @@ class Marker
 
     /**
      * @var string
-     *
      * @ORM\Column(name="coord_x", type="decimal", precision=10, scale=7)
+     * @Assert\NotBlank()
+     * @Assert\Type(
+     *     type="double"
+     * )
      */
     private $coordX;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="coord_y", type="decimal", precision=10, scale=7)
+     * @Assert\NotBlank()
+     * @Assert\Type(
+     *     type="double",
+     * )
      */
     private $coordY;
 
@@ -44,8 +51,11 @@ class Marker
 
     /**
      * @var string
-     *
      * @ORM\Column(name="name", type="string", length=255)
+     * @Assert\NotBlank()
+     * @Assert\Type(
+     *     type="string"
+     * )
      */
     private $name;
 
