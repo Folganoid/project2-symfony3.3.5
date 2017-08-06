@@ -90,20 +90,24 @@ function initMap() {
 $(document).ready(function () {
 
     $('#comment_but').click(function () {
-        $.ajax({
-            type: "POST",
-            url: "/send_comment",
-            cache: false,
-            data: {
-                "data": $('#comment_val').val(),
-                "marker": $('#comment_val').attr('marker'),
-                "rate": $('#comment_rate').val()
-            },
-            success: function (result) {
-                getComments($('#comment_val').attr('marker'));
-            }
-        });
+
+        if($('#comment_val').val()) {
+            $.ajax({
+                type: "POST",
+                url: "/send_comment",
+                cache: false,
+                data: {
+                    "data": $('#comment_val').val(),
+                    "marker": $('#comment_val').attr('marker'),
+                    "rate": $('#comment_rate').val()
+                },
+                success: function (result) {
+                    getComments($('#comment_val').attr('marker'));
+                }
+            });
+        }
     });
+
 });
 
 /**

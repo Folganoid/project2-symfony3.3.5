@@ -28,7 +28,7 @@ class UserType extends AbstractType
             ])
             ->add('submit', SubmitType::class, [
                'attr' => [
-                   'class' => 'btn btn-success pull-right'
+                   'class' => 'uk-button uk-button-default uk-align-right"'
                ]
             ]);
     }

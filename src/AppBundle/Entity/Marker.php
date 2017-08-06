@@ -26,8 +26,10 @@ class Marker
      * @var string
      * @ORM\Column(name="coord_x", type="decimal", precision=10, scale=7)
      * @Assert\NotBlank()
-     * @Assert\Type(
-     *     type="double"
+     *
+     * @Assert\Range(
+     *      min = -85,
+     *      max = 85,
      * )
      */
     private $coordX;
@@ -36,8 +38,10 @@ class Marker
      * @var string
      * @ORM\Column(name="coord_y", type="decimal", precision=10, scale=7)
      * @Assert\NotBlank()
-     * @Assert\Type(
-     *     type="double",
+     *
+     * @Assert\Range(
+     *      min = -180,
+     *      max = 180,
      * )
      */
     private $coordY;

@@ -49,7 +49,7 @@ class MapController extends Controller
      * @param int $user_id
      * @return array
      */
-    protected function getMarkerList(int $user_id)
+    function getMarkerList(int $user_id)
     {
         $repository = $this->getDoctrine()
             ->getRepository(Marker::class);

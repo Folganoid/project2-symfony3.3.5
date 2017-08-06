@@ -3,8 +3,21 @@
 {% block title %}AppBundle:Data:data{% endblock %}
 
 {% block body %}
-<h1>Welcome to the Data:data page</h1>
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
+    <div class="uk-container">
+        <br>
+        <div class="uk-tile-primary">
+            <h3>Add marker</h3>
+        </div>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+        <br>
+        <div class="uk-tile-primary">
+            <h3>Add picture</h3>
+        </div>
+        {{ form_start(form2) }}
+        {{ form_widget(form2) }}
+        {{ form_row(form2.filename) }}
+        {{ form_end(form2) }}
+    </div>
 {% endblock %}
