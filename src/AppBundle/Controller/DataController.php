@@ -35,7 +35,6 @@ class DataController extends Controller
             return $this->redirect($uri);
         }
 
-
         $picture = new Picture();
         $form2 = $this->createForm(PictureType::class, $picture);
         $form2->handleRequest($request);
@@ -44,17 +43,17 @@ class DataController extends Controller
 
             $picture = $form2->getData();
 
+            if(!$picture->getMarkerId()) throw new \Exception('Empty data');
+            if ($picture->getMarkerId()->getUserId() != $this->getUser()->getId()) {
+                throw new \Exception('Access denied !');
+            }
+
             $file = $picture->getFilename();
             $fileName = md5(uniqid()) . '.' . $file->guessExtension();
 
             $file->move(
                 $this->getParameter('pictures_directory'),
                 $fileName);
-
-
-            if ($picture->getMarkerId()->getId() != $this->getUser()->getId()) {
-                throw new \Exception('Access denied !');
-            }
 
             $picture->setFilename($fileName);
             $picture->setDate($this->date = new \DateTime());
@@ -64,10 +63,10 @@ class DataController extends Controller
             $em->persist($picture);
             $em->flush();
 
-
             $uri = $this->generateUrl('map', array('user_id' => $this->getUser()->getId()));
             return $this->redirect($uri);
         }
+
 
 
         return $this->render('AppBundle:Data:data.html.twig', array(

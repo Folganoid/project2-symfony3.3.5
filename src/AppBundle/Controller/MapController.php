@@ -56,6 +56,7 @@ class MapController extends Controller
 
         $query = $repository->createQueryBuilder('m')
             ->where('m.userId = '.$user_id)
+            ->orderBy('m.name', 'ASC')
             ->getQuery();
 
         return $query->getArrayResult();
