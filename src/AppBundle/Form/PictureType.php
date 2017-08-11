@@ -49,7 +49,7 @@ class PictureType extends AbstractType
                     'choice_label' => 'name',
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('m')
-                            ->where('m.userId = '.$this->tokenStorage->getToken()->getUser()->getId())
+                            ->where('m.userId = ' . $this->tokenStorage->getToken()->getUser()->getId())
                             ->orderBy('m.name', 'ASC');
                     },
                     'label' => 'Marker',

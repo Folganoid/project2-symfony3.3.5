@@ -39,7 +39,10 @@ function initMap() {
             title: markersArray[i].name
         });
 
-        addMarker(window['marker' + markersArray[i].id], markersArray[i].id);
+        var isOwner = false;
+        if (markersArray[i].userId == $('#map').attr('iduser')) isOwner = true;
+
+        addMarker(window['marker' + markersArray[i].id], markersArray[i].id, isOwner);
     }
 
     $('.marker_link').click(function () {
@@ -58,16 +61,16 @@ function initMap() {
      * @param vr
      * @param cnt
      */
-    function addMarker(vr, cnt) {
+    function addMarker(vr, cnt, owner) {
 
         vr.addListener('click', function () {
 
             toggleBounce();
             curM = cnt;
-            getPics(cnt);
+            getPics(cnt, owner);
             getComments(cnt);
             $('#comment_val').attr('marker', cnt);
-            $('.uk-hidden').attr('class', 'uk-container');
+            $('.toggle-hidden').attr('class', 'uk-container');
 
             /**
              * toggle marker animation
@@ -163,7 +166,7 @@ function getComments(cnt) {
 /**
  * get pictures
  */
-function getPics(cnt) {
+function getPics(cnt, owner) {
 
     var picArray;
 
@@ -180,12 +183,16 @@ function getPics(cnt) {
     var list = '';
 
     for (i = 0; i < picArray.length; i++) {
+
         list += "<li>" +
             "<img src='../img/" + picArray[i].filename + "'>" +
             "<a href='../img/" + picArray[i].filename + "' data-uk-lightbox title='" + picArray[i].name +
             " (" + picArray[i].date + ")'>" +
-            "<span class='uk-icon-plus-square-o icon-img'></span></a>" +
-            "</li>"
+            "<span class='uk-icon-plus-square-o icon-img'></span></a>";
+
+            if (owner) list += "<a href='/img_edit/"+ picArray[i].id +"'><span class='uk-icon-edit icon-img'></span></a>";
+
+        list += "</li>";
     }
 
     $('#map_slider').empty();

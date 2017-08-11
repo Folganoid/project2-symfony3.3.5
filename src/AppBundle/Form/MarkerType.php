@@ -21,10 +21,9 @@ class MarkerType extends AbstractType
             ->add('coordX', null, array('label' => 'Latitude'))
             ->add('coordY', null, array('label' => 'Longitude'))
             ->add('save', SubmitType::class, [
-            'attr' => [
-        'class' => 'uk-button uk-button-default uk-align-right'
-    ]
-            ])
-        ;
+                'attr' => [
+                    'class' => 'uk-button uk-button-default uk-align-right'
+                ]
+            ]);
     }
 }

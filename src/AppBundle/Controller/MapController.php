@@ -29,6 +29,7 @@ class MapController extends Controller
 
         return $this->render('AppBundle:Map:map.html.twig', array(
             'user' => $user_id,
+            'iduser' => $this->getUser()->getId(),
             'username' => $username,
             'markers' => $markers
         ));

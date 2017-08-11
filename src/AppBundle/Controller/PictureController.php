@@ -28,4 +28,19 @@ class PictureController extends Controller
 
         return new Response($jsonContent);
     }
+
+    /**
+     * @Route("/img_edit/{id}", name="image_edit")
+     */
+    public function imgEditAction($id)
+    {
+        $repository = $this->getDoctrine()->getRepository(Picture::class);
+
+        $picture = $repository->findBy(
+            array('id' => $id)
+        );
+
+        return new Response(var_dump($picture));
+    }
+
 }

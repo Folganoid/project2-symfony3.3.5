@@ -27,9 +27,9 @@ class UserType extends AbstractType
                 'type' => PasswordType::class
             ])
             ->add('submit', SubmitType::class, [
-               'attr' => [
-                   'class' => 'uk-button uk-button-default uk-align-right"'
-               ]
+                'attr' => [
+                    'class' => 'uk-button uk-button-default uk-align-right"'
+                ]
             ]);
     }
 

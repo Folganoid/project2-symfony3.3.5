@@ -43,7 +43,7 @@ class DataController extends Controller
 
             $picture = $form2->getData();
 
-            if(!$picture->getMarkerId()) throw new \Exception('Empty data');
+            if (!$picture->getMarkerId()) throw new \Exception('Empty data');
             if ($picture->getMarkerId()->getUserId() != $this->getUser()->getId()) {
                 throw new \Exception('Access denied !');
             }
@@ -66,8 +66,6 @@ class DataController extends Controller
             $uri = $this->generateUrl('map', array('user_id' => $this->getUser()->getId()));
             return $this->redirect($uri);
         }
-
-
 
         return $this->render('AppBundle:Data:data.html.twig', array(
             'form' => $form->createView(),
