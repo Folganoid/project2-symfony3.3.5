@@ -23,13 +23,16 @@ class MapController extends Controller
         $req = $user->findOneBy(
             array('id' => $user_id)
         );
-        $username = ($req) ? ($req->getUsername()) : "";
 
+        $username = ($req) ? ($req->getUsername()) : "";
+        $userId = ($this->getUser()) ? $this->getUser()->getId() : NULL;
         $markers = $this->getMarkerList($user_id);
+
+
 
         return $this->render('AppBundle:Map:map.html.twig', array(
             'user' => $user_id,
-            'iduser' => $this->getUser()->getId(),
+            'iduser' => $userId,
             'username' => $username,
             'markers' => $markers
         ));

@@ -55,7 +55,6 @@ function initMap() {
 
     });
 
-
     /**
      * add marker on map
      * @param vr
@@ -184,7 +183,7 @@ function getPics(cnt, owner) {
 
     for (i = 0; i < picArray.length; i++) {
 
-        list += "<li>" +
+        list += "<li title='" + picArray[i].name + "'>" +
             "<img src='../img/" + picArray[i].filename + "'>" +
             "<a href='../img/" + picArray[i].filename + "' data-uk-lightbox title='" + picArray[i].name +
             " (" + picArray[i].date + ")'>" +

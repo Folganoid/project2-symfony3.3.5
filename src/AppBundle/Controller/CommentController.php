@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Comments;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
+use AppBundle\Classes\Protect;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -40,7 +40,7 @@ class CommentController extends Controller
         $comment->setUserId($this->getUser()->getId());
         $comment->setMarkerId($marker);
         $comment->setDate($this->date = new \DateTime());
-        $comment->setContent($content);
+        $comment->setContent(Protect::EntrySecure($content));
         $comment->setRate($rate);
 
         $em->persist($comment);

@@ -19,3 +19,7 @@
     background-color: lightgrey;
     cursor: pointer;
 }
+
+.edit_pic {
+    max-width: 400px;
+}
