@@ -1,0 +1,20 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}
+    AppBundle:Data:data
+{% endblock %}
+
+{% block body %}
+
+    <div class="uk-container">
+        <br>
+        <div class="uk-tile-primary">
+            <h3>Edit marker</h3>
+        </div>
+        <br>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+        <br>
+    </div>
+{% endblock %}

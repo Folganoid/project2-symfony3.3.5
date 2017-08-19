@@ -12,29 +12,15 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
- * Class PictureType
+ * Class MarkerType
  * @package AppBundle\Form
  */
-class ImgEditType extends AbstractType
+class MarkerEditType extends AbstractType
 
 {
-    private $tokenStorage;
-
-    /**
-     * PictureType constructor.
-     * @param TokenStorageInterface|null $tokenStorage
-     */
-    public function __construct(TokenStorageInterface $tokenStorage = null)
-    {
-        $this->tokenStorage = $tokenStorage;
-    }
-
     /**
      * @param FormBuilderInterface $builder
      * @param array $options
@@ -49,19 +35,19 @@ class ImgEditType extends AbstractType
                     ]
                 )
             )
-            ->add('markerId', EntityType::class,
-                array(
-                    'class' => 'AppBundle:Marker',
-                    'choice_label' => 'name',
-                    'query_builder' => function (EntityRepository $er) {
-                        return $er->createQueryBuilder('m')
-                            ->where('m.userId = ' . $this->tokenStorage->getToken()->getUser()->getId())
-                            ->orderBy('m.name', 'ASC');
-                    },
-                    'label' => 'Marker',
-                    'required' => true,
+            ->add('coordX', TextType::class, array(
+                    'attr' => [
+                        'value' => $options['coordX'],
+                    ]
                 )
             )
+            ->add('coordY', TextType::class, array(
+                    'attr' => [
+                        'value' => $options['coordY'],
+                    ]
+                )
+            )
+
             ->add('save', SubmitType::class, [
                 'attr' => [
                     'class' => 'uk-button uk-button-default uk-align-right'
@@ -73,16 +59,17 @@ class ImgEditType extends AbstractType
                 ]
             ])
 
+
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-                'data_class' => 'AppBundle\Entity\Picture',
-                'id' => null,
+                'data_class' => 'AppBundle\Entity\Marker',
                 'name' => null,
-                'markerId' => null,
+                'coordX' => null,
+                'coordY' => null,
         ]);
     }
 }

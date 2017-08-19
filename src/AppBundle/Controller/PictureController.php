@@ -2,17 +2,19 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Classes\Protect;
 use AppBundle\Entity\Picture;
 use AppBundle\Form\ImgEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
 
-
-
+/**
+ * Class PictureController
+ * @package AppBundle\Controller
+ */
 class PictureController extends Controller
 {
 
@@ -65,11 +67,22 @@ class PictureController extends Controller
             $em = $this->getDoctrine()->getManager();
             $pic = $em->getRepository(Picture::class)->find($id);
 
-            $pic->setName($marker->getName());
-            $pic->setMarkerId($marker->getMarkerId()->getId());
+            if ($form->get('save')->isClicked()) {
 
-            $em->persist($pic);
-            $em->flush();
+                $pic->setName($marker->getName());
+                $pic->setMarkerId($marker->getMarkerId()->getId());
+
+                $em->persist($pic);
+                $em->flush();
+            }
+
+            if ($form->get('delete')->isClicked()) {
+                $fs = new Filesystem();
+                $fs->remove([$this->getParameter('pictures_directory') . '/' . $picture->getFilename()]);
+                $em->remove($pic);
+                $em->flush();
+            }
+
 
             return $this->redirect($this->generateUrl('map', array('user_id' => $this->getUser()->getId())));
         }

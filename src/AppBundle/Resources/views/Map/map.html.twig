@@ -26,14 +26,20 @@
                 <ul id="marker_list">
                     {% for mark in markers %}
                         <li class="marker_link" value="{{ mark.id }}" coordx="{{ mark.coordX }}"
-                            coordy="{{ mark.coordY }}">{{ mark.name }}</li>
+                            coordy="{{ mark.coordY }}">{{ mark.name }}
+                            {% if mark.userId == iduser %}
+                                <a class="uk-float-right uk-icon-hover uk-icon-edit" href="/marker_edit/{{ mark.id }}"></a>
+                            {% endif %}
+                        </li>
                     {% endfor %}
                 </ul>
             </div>
         </div>
     </div>
     <br>
-    <div class="uk-container uk-hidden toggle-hidden"><b id="marker_title"></b>&nbsp;<span id="star_title"></span></div>
+    <div class="uk-container uk-hidden toggle-hidden">
+        <b id="marker_title"></b>&nbsp;<span id="star_title"></span>
+    </div>
     <div class="uk-container" data-uk-slider="{infinite: false}">
         <div class="uk-slider-container">
             <ul id="map_slider" class="uk-slider uk-grid-width-medium-1-6 uk-grid-small">

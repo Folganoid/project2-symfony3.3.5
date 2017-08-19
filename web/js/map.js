@@ -189,7 +189,9 @@ function getPics(cnt, owner) {
             " (" + picArray[i].date + ")'>" +
             "<span class='uk-icon-plus-square-o icon-img'></span></a>";
 
-            if (owner) list += "<a href='/img_edit/"+ picArray[i].id +"'><span class='uk-icon-edit icon-img'></span></a>";
+            if (owner) {
+                list += "<a href='/img_edit/"+ picArray[i].id +"'><span class='uk-icon-edit icon-img'></span></a>";
+            }
 
         list += "</li>";
     }
