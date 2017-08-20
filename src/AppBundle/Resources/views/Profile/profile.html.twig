@@ -1,0 +1,18 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block body %}
+
+    <div class="uk-container">
+        <br>
+        <div class="uk-tile-primary">
+            <h3>Edit profile</h3>
+        </div>
+        <br>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+        <br>
+    </div>
+{% endblock %}
