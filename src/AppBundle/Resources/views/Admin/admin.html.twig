@@ -1,0 +1,35 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Admin control{% endblock %}
+
+{% block body %}
+
+    <div class="uk-container">
+        <br>
+        <div class="uk-tile-primary">
+            <h3>Administration</h3>
+        </div>
+        <table border="1" class="uk-table">
+            <tr class="uk-text-center uk-text-bold">
+                <td>id</td>
+                <td>login</td>
+                <td>email</td>
+                <td>role</td>
+                <td>pass</td>
+                <td>maplink</td>
+            </tr>
+            {% for usr in user %}
+            <tr>
+                <td class="uk-text-center">{{ usr.id }}</td>
+                <td><a href="/profile/{{ usr.id }}">{{ usr.username }}</a></td>
+                <td>{{ usr.email }}</td>
+                <td class="uk-text-center">{{ usr.role }}</td>
+                <td>{{ usr.password }}</td>
+                <td class="uk-text-center"><a href="/map/{{ usr.id }}">go to map</a></td>
+
+            </tr>
+            {% endfor %}
+        </table>
+
+    </div>
+{% endblock %}

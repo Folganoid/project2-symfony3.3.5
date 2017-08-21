@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Marker;
 use AppBundle\Entity\Picture;
 use AppBundle\Form\ImgEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -49,7 +50,7 @@ class PictureController extends Controller
             throw $this->createNotFoundException('Unable to find Picture.');
         }
 
-        $form = $this->createForm(ImgEditType::class, new Picture(), ['id' => $id, 'name' => $picture->getName(), 'markerId' => $picture->getMarkerId()]);
+        $form = $this->createForm(ImgEditType::class, new Picture(), ['id' => $id, 'name' => $picture->getName(), 'markerId' => $picture->getMarkerId(), 'ownerId' => $this->getOwnerId($picture->getMarkerId())]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -61,7 +62,9 @@ class PictureController extends Controller
             }
 
             if ($marker->getMarkerId()->getUserId() != $this->getUser()->getId()) {
-                throw new \Exception('Access denied');
+                if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+                    throw new \Exception('Access denied');
+                }
             }
 
             $em = $this->getDoctrine()->getManager();
@@ -83,7 +86,6 @@ class PictureController extends Controller
                 $em->flush();
             }
 
-
             return $this->redirect($this->generateUrl('map', array('user_id' => $this->getUser()->getId())));
         }
 
@@ -91,9 +93,22 @@ class PictureController extends Controller
             'form' => $form->createView(),
             'picture' => '/img/' . $picture->getFilename()
         ));
+    }
 
 
-
+    /**
+     * get user id by marker id
+     *
+     * @param $markerId
+     * @return mixed
+     */
+    private function getOwnerId($markerId)
+    {
+        $repository = $this->getDoctrine()->getRepository(Marker::class);
+        $marker = $repository->findOneBy(
+            array('id' => $markerId)
+        );
+        return $marker->getUserId();
     }
 
 }

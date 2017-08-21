@@ -49,5 +49,16 @@ class CommentController extends Controller
         return new Response('Saved new product with id '.$comment->getId());
     }
 
+    /**
+     * @Route("/del_comment/{id}", name="del_comment")
+     */
+    public function delCommentAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $comment = $em->getRepository(Comments::class)->find($id);
+        $em->remove($comment);
+        $em->flush();
 
+        return new Response('Comment with id '.$id. ' is removed');
+    }
 }

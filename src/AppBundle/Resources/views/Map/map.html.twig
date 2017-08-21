@@ -1,6 +1,6 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}AppBundle:Map:map{% endblock %}
+{% block title %}Map{% endblock %}
 
 {% block body %}
     <script type="text/javascript" src="{{ asset('js/components/slider.js') }}"></script>
@@ -14,10 +14,19 @@
         <div class="uk-tile-primary">
             <h3 align="center">Map {{ username }}</h3>
         </div>
-
+        <div class="uk-container">
+            <div class="uk-align-right uk-text-small">You can choose another user:
+            <select class="uk-text-small" id="userlist">
+                {% for items in userlist %}
+                    <option value="{{ items[0] }}">{{ items[1] }}</option>
+                {% endfor %}
+            </select>
+                <button class="uk-button-mini uk-button" id="userlistbut">Go</button>
+            </div>
+        </div>
         <div class="uk-grid">
             <div class="uk-width-2-3">
-                <div id="map" value="{{ user }}" iduser="{{ iduser }}"></div>
+                <div id="map" value="{{ user }}" iduser="{{ iduser }}" admin="{{ admin }}"></div>
                 <script async defer
                         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDEF7mhKBOcKf3DOomC3CPSq8htToAlZ84&callback=initMap">
                 </script>
@@ -27,8 +36,9 @@
                     {% for mark in markers %}
                         <li class="marker_link" value="{{ mark.id }}" coordx="{{ mark.coordX }}"
                             coordy="{{ mark.coordY }}">{{ mark.name }}
-                            {% if mark.userId == iduser %}
-                                <a class="uk-float-right uk-icon-hover uk-icon-edit" href="/marker_edit/{{ mark.id }}"></a>
+                            {% if (mark.userId == iduser) or is_granted('ROLE_ADMIN') %}
+                                <a class="uk-float-right uk-icon-hover uk-icon-edit"
+                                   href="/marker_edit/{{ mark.id }}"></a>
                             {% endif %}
                         </li>
                     {% endfor %}
@@ -49,7 +59,7 @@
     </div>
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <div class="uk-container toggle-hidden uk-hidden">
-            <input id="comment_val" placeholder="Leave comment" />
+            <input id="comment_val" placeholder="Leave comment"/>
             <select id="comment_rate">
                 <option value="0">&#9734;&#9734;&#9734;&#9734;&#9734;</option>
                 <option value="1">&#9733;&#9734;&#9734;&#9734;&#9734;</option>
@@ -59,6 +69,10 @@
                 <option value="5">&#9733;&#9733;&#9733;&#9733;&#9733;</option>
             </select>
             <button id="comment_but" class="uk-button uk-button-default">Send</button>
+        </div>
+    {% else %}
+        <div class="uk-container toggle-hidden uk-hidden">
+            <span class="uk-alert-danger">Only registered user can leave comments.</span>
         </div>
     {% endif %}
     <br>

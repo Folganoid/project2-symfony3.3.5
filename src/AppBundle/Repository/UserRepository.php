@@ -20,4 +20,9 @@ class UserRepository extends \Doctrine\ORM\EntityRepository implements UserLoade
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function findAll()
+    {
+        return $this->findBy(array(), array('username' => 'ASC'));
+    }
 }

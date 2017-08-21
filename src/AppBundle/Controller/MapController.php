@@ -24,6 +24,13 @@ class MapController extends Controller
             array('id' => $user_id)
         );
 
+        $userListTMP = $user->findAll();
+
+        $userList = [];
+            for($i=0; $i<count($userListTMP); $i++) {
+                $userList[] = [$userListTMP[$i]->getId(), $userListTMP[$i]->getUsername()];
+            };
+
         $username = ($req) ? ($req->getUsername()) : "";
         $userId = ($this->getUser()) ? $this->getUser()->getId() : NULL;
         $markers = $this->getMarkerList($user_id);
@@ -34,7 +41,9 @@ class MapController extends Controller
             'user' => $user_id,
             'iduser' => $userId,
             'username' => $username,
-            'markers' => $markers
+            'markers' => $markers,
+            'userlist' => $userList,
+            'admin' => ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) ? 1 : 0,
         ));
     }
 

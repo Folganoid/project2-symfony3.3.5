@@ -15,7 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class PictureType
@@ -24,16 +23,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class ImgEditType extends AbstractType
 
 {
-    private $tokenStorage;
-
-    /**
-     * PictureType constructor.
-     * @param TokenStorageInterface|null $tokenStorage
-     */
-    public function __construct(TokenStorageInterface $tokenStorage = null)
-    {
-        $this->tokenStorage = $tokenStorage;
-    }
+    private $owner;
 
     /**
      * @param FormBuilderInterface $builder
@@ -41,6 +31,8 @@ class ImgEditType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+
+        $this->owner = $options['ownerId'];
 
         $builder
             ->add('name', TextType::class, array(
@@ -55,7 +47,7 @@ class ImgEditType extends AbstractType
                     'choice_label' => 'name',
                     'query_builder' => function (EntityRepository $er) {
                         return $er->createQueryBuilder('m')
-                            ->where('m.userId = ' . $this->tokenStorage->getToken()->getUser()->getId())
+                            ->where('m.userId = ' . $this->owner)
                             ->orderBy('m.name', 'ASC');
                     },
                     'label' => 'Marker',
@@ -69,11 +61,9 @@ class ImgEditType extends AbstractType
             ])
             ->add('delete', SubmitType::class, [
                 'attr' => [
-                    'class' => 'uk-button uk-button-danger uk-align-right'
-                ]
-            ])
-
-        ;
+                    'class' => 'uk-button uk-button-danger uk-align-right',
+                ],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -83,6 +73,7 @@ class ImgEditType extends AbstractType
                 'id' => null,
                 'name' => null,
                 'markerId' => null,
+                'ownerId' => null
         ]);
     }
 }

@@ -55,8 +55,9 @@ class MarkerEditType extends AbstractType
             ])
             ->add('delete', SubmitType::class, [
                 'attr' => [
-                    'class' => 'uk-button uk-button-danger uk-align-right'
-                ]
+                    'class' => 'uk-button uk-button-danger uk-align-right',
+                ],
+                'label' => 'Delete with ALL comments and images'
             ])
 
 

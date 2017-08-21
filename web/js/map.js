@@ -41,8 +41,9 @@ function initMap() {
 
         var isOwner = false;
         if (markersArray[i].userId == $('#map').attr('iduser')) isOwner = true;
+        if ($('#map').attr('admin') == 1) isOwner = true;
 
-        addMarker(window['marker' + markersArray[i].id], markersArray[i].id, isOwner);
+        addMarker(window['marker' + markersArray[i].id], markersArray[i].id, isOwner, markersArray[i].name);
     }
 
     $('.marker_link').click(function () {
@@ -60,15 +61,16 @@ function initMap() {
      * @param vr
      * @param cnt
      */
-    function addMarker(vr, cnt, owner) {
+    function addMarker(vr, cnt, owner, name) {
 
         vr.addListener('click', function () {
 
             toggleBounce();
             curM = cnt;
             getPics(cnt, owner);
-            getComments(cnt);
+            getComments(cnt, name);
             $('#comment_val').attr('marker', cnt);
+            $('#comment_val').attr('markername', name);
             $('.toggle-hidden').attr('class', 'uk-container');
 
             /**
@@ -104,19 +106,22 @@ $(document).ready(function () {
                     "rate": $('#comment_rate').val()
                 },
                 success: function (result) {
-                    getComments($('#comment_val').attr('marker'));
+                    getComments($('#comment_val').attr('marker'), $('#comment_val').attr('markername'));
                 }
             });
         }
     });
 
+    $('#userlistbut').click(function () {
+        location.href = '/map/' + $('#userlist').val();
+    });
 });
 
 /**
  *get comments
  * @param cnt
  */
-function getComments(cnt) {
+function getComments(cnt, name) {
 
     var comArray;
 
@@ -136,10 +141,14 @@ function getComments(cnt) {
 
     for (i = 0; i < comArray.length; i++) {
 
+        var forAdmin = '';
+        if ($('#map').attr('admin') == 1) forAdmin = ' <button class="delcom uk-button uk-button-mini uk-button-danger" number="' + comArray[i].id + '">Remove</button>';
+
         list += '<li><div>' +
             '<b>' + comArray[i].username + '</b>' +
             '<i> (' + comArray[i].date.date.substring(0, 19) + ')</i>' +
             '<span> ' + getStars(comArray[i].rate) + '</span>' +
+            forAdmin +
             '<div class="uk-comment-body"><p>' + comArray[i].content + '</p>' +
             '</div></div></li>';
 
@@ -155,10 +164,21 @@ function getComments(cnt) {
 
     if (totalRate != 0 && totalRateCount != 0) {
         $('#star_title').append(getStars(totalRate/totalRateCount));
-        $('#marker_title').append((totalRate/totalRateCount).toFixed(2))
+        $('#marker_title').append('<b>' + name + '</b> - ' + (totalRate/totalRateCount).toFixed(2))
     }
 
     $('#map_comments').append(list);
+
+    $('.delcom').click(function () {
+        $.ajax({
+            type: "GET",
+            url: "/del_comment/" + $(this).attr('number'),
+            cache: false,
+            success: function (result) {
+                getComments($('#comment_val').attr('marker'), $('#comment_val').attr('markername'));
+            }
+        });
+    });
 
 }
 

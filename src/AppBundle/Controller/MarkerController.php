@@ -9,11 +9,13 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Marker;
+use AppBundle\Entity\Picture;
 use AppBundle\Form\MarkerEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * Class MarkerController
@@ -37,7 +39,9 @@ class MarkerController extends Controller
         }
 
         if ($marker->getUserId() != $this->getUser()->getId()) {
-            throw new \Exception('Access denied');
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+                throw new \Exception('Access denied');
+            }
         }
 
         $form = $this->createForm(MarkerEditType::class, new Marker(), ['name' => $marker->getName(), 'coordX' => $marker->getCoordX(), 'coordY' => $marker->getCoordY()]);
@@ -60,6 +64,28 @@ class MarkerController extends Controller
             }
 
             if ($form->get('delete')->isClicked()) {
+
+                $picture = $this->getDoctrine()->getRepository(Picture::class)->findBy(
+                    array('markerId' => $id)
+                );
+
+                $fileList = [];
+
+                for ($i =0; $i < count($picture); $i++)
+                {
+                    $fileList[] = $this->getParameter('pictures_directory') . '/' .$picture[$i]->getFilename();
+                }
+
+                $fs = new Filesystem();
+                $fs->remove($fileList);
+
+                $query = $em->createQuery('DELETE FROM AppBundle:Picture p WHERE p.markerId = '. $id);
+                $query->getResult();
+
+                $query = $em->createQuery('DELETE FROM AppBundle:Comments c WHERE c.markerId = '. $id);
+                $query->getResult();
+
+
                 $em->remove($mrk);
                 $em->flush();
             }
