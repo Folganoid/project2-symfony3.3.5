@@ -21,8 +21,8 @@
 
 <nav class="uk-navbar">
     <div class="uk-navbar">
-        <a href="/" class="uk-navbar-brand">FGmap</a>
-        <ul class="uk-navbar-nav">
+        <a href="/" class="uk-navbar-brand uk-visible-large">FGmap</a>
+        <ul class="uk-navbar-nav uk-visible-large">
             <li>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 <a href="/map/{{ app.user.id }}">
@@ -47,6 +47,7 @@
             </li>
             {% endif %}
         </ul>
+        <a href="#offcanvas" class="uk-navbar-toggle uk-hidden-large" data-uk-offcanvas></a>
 
         <ul class="uk-navbar-nav uk-navbar-flip">
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -83,4 +84,36 @@
 </div>
 {% block javascripts %}{% endblock %}
 </body>
+
+<div id="offcanvas" class="uk-offcanvas">
+    <div class="uk-offcanvas-bar">
+        <ul class="uk-nav uk-nav-offcanvas">
+            <li>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a href="/map/{{ app.user.id }}">
+                    {% else %}
+                    <a href="/map">
+                        {% endif %}
+                        Map
+                    </a>
+            </li>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li>
+                    <a href="/data">
+                        My Data
+                    </a>
+                </li>
+            {% endif %}
+            {% if is_granted('ROLE_ADMIN') %}
+                <li>
+                    <a href="/admin">
+                        Admin
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+
 </html>
