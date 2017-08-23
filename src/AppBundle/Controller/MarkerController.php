@@ -14,7 +14,6 @@ use AppBundle\Form\MarkerEditType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Filesystem\Filesystem;
 
 /**
@@ -25,11 +24,11 @@ class MarkerController extends Controller
 {
     /**
      * @Route("/marker_edit/{id}", name="marker_edit")
+     * AJAX method
      */
-    public function markerEditAction($id, Request $request)
+    public function markerEditAction(int $id, Request $request)
     {
         $repository = $this->getDoctrine()->getRepository(Marker::class);
-
         $marker = $repository->findOneBy(
             array('id' => $id)
         );
@@ -44,15 +43,29 @@ class MarkerController extends Controller
             }
         }
 
-        $form = $this->createForm(MarkerEditType::class, new Marker(), ['name' => $marker->getName(), 'coordX' => $marker->getCoordX(), 'coordY' => $marker->getCoordY()]);
+        $form = $this->createForm(MarkerEditType::class, new Marker(), [
+                'name' => $marker->getName(),
+                'coordX' => $marker->getCoordX(),
+                'coordY' => $marker->getCoordY()
+            ]
+        );
+
         $form->handleRequest($request);
 
+
+        /**
+         * marker edit form submit
+         */
         if ($form->isSubmitted() && $form->isValid()) {
 
             $markerForm = $form->getData();
             $em = $this->getDoctrine()->getManager();
             $mrk = $em->getRepository(Marker::class)->find($id);
 
+
+            /**
+             * save button
+             */
             if ($form->get('save')->isClicked()) {
 
                 $mrk->setName($markerForm->getName());
@@ -63,6 +76,9 @@ class MarkerController extends Controller
                 $em->flush();
             }
 
+            /**
+             * delete button
+             */
             if ($form->get('delete')->isClicked()) {
 
                 $picture = $this->getDoctrine()->getRepository(Picture::class)->findBy(
@@ -71,18 +87,17 @@ class MarkerController extends Controller
 
                 $fileList = [];
 
-                for ($i =0; $i < count($picture); $i++)
-                {
-                    $fileList[] = $this->getParameter('pictures_directory') . '/' .$picture[$i]->getFilename();
+                for ($i = 0; $i < count($picture); $i++) {
+                    $fileList[] = $this->getParameter('pictures_directory') . '/' . $picture[$i]->getFilename();
                 }
 
                 $fs = new Filesystem();
                 $fs->remove($fileList);
 
-                $query = $em->createQuery('DELETE FROM AppBundle:Picture p WHERE p.markerId = '. $id);
+                $query = $em->createQuery('DELETE FROM AppBundle:Picture p WHERE p.markerId = ' . $id);
                 $query->getResult();
 
-                $query = $em->createQuery('DELETE FROM AppBundle:Comments c WHERE c.markerId = '. $id);
+                $query = $em->createQuery('DELETE FROM AppBundle:Comments c WHERE c.markerId = ' . $id);
                 $query->getResult();
 
 
@@ -97,7 +112,6 @@ class MarkerController extends Controller
             'form' => $form->createView(),
         ));
     }
-
 
 
 }

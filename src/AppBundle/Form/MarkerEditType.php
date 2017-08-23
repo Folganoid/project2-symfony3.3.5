@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: fg
- * Date: 04.08.17
- * Time: 19:05
- */
 
 namespace AppBundle\Form;
 
@@ -19,7 +13,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * @package AppBundle\Form
  */
 class MarkerEditType extends AbstractType
-
 {
     /**
      * @param FormBuilderInterface $builder
@@ -27,7 +20,6 @@ class MarkerEditType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add('name', TextType::class, array(
                     'attr' => [
@@ -47,7 +39,6 @@ class MarkerEditType extends AbstractType
                     ]
                 )
             )
-
             ->add('save', SubmitType::class, [
                 'attr' => [
                     'class' => 'uk-button uk-button-default uk-align-right'
@@ -58,19 +49,16 @@ class MarkerEditType extends AbstractType
                     'class' => 'uk-button uk-button-danger uk-align-right',
                 ],
                 'label' => 'Delete with ALL comments and images'
-            ])
-
-
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-                'data_class' => 'AppBundle\Entity\Marker',
-                'name' => null,
-                'coordX' => null,
-                'coordY' => null,
+            'data_class' => 'AppBundle\Entity\Marker',
+            'name' => null,
+            'coordX' => null,
+            'coordY' => null,
         ]);
     }
 }

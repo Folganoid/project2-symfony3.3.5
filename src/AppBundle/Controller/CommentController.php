@@ -9,11 +9,16 @@ use AppBundle\Classes\Protect;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-
+/**
+ * Class CommentController
+ * @package AppBundle\Controller
+ */
 class CommentController extends Controller
 {
-
     /**
+     * get comments by marker ID
+     * AJAX method
+     *
      * @Route("/comment_by_marker_id/{id}", name="comment_by_marker_id")
      */
     public function commentAction($id)
@@ -26,6 +31,7 @@ class CommentController extends Controller
 
     /**
      * @Route("/send_comment", name="send_comment")
+     * AJAX method
      */
     public function send_commentAction(Request $request)
     {
@@ -50,7 +56,10 @@ class CommentController extends Controller
     }
 
     /**
+     * delete comment by id
+     *
      * @Route("/del_comment/{id}", name="del_comment")
+     * AJAX method
      */
     public function delCommentAction($id)
     {

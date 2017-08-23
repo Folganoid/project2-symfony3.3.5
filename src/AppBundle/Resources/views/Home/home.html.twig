@@ -1,0 +1,25 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}FGmap - homepage{% endblock %}
+
+{% block body %}
+    <br>
+    <div class="uk-container">
+        <div class="uk-tile-primary">
+            <h2 align="center">WELLCOME TO FGMAP</h2>
+        </div>
+            <br>
+            <div class="uk-grid uk-grid-width-small-1-2" data-uk-grid-margin>
+                <div><img class="uk-align-center" src="{{ asset('img_sys/logo.png') }}" /></div>
+                <div class="uk-text-justify">
+                    <ul>
+                        <li>Create your own map;</li>
+                        <li>Mark impressive places on Earth;</li>
+                        <li>Link picture gallery with markers;</li>
+                        <li>Leave remarks and rating;</li>
+                        <li>Share with friends;</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+{% endblock %}

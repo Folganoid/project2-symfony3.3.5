@@ -21,7 +21,6 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
  * @package AppBundle\Form
  */
 class PictureType extends AbstractType
-
 {
     private $tokenStorage;
 
@@ -40,7 +39,6 @@ class PictureType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add('name')
             ->add('markerId', EntityType::class,

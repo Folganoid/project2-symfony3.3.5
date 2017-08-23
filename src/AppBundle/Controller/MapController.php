@@ -25,17 +25,15 @@ class MapController extends Controller
         );
 
         $userListTMP = $user->findAll();
-
         $userList = [];
-            for($i=0; $i<count($userListTMP); $i++) {
-                $userList[] = [$userListTMP[$i]->getId(), $userListTMP[$i]->getUsername()];
-            };
+
+        for ($i = 0; $i < count($userListTMP); $i++) {
+            $userList[] = [$userListTMP[$i]->getId(), $userListTMP[$i]->getUsername()];
+        };
 
         $username = ($req) ? ($req->getUsername()) : "";
         $userId = ($this->getUser()) ? $this->getUser()->getId() : NULL;
         $markers = $this->getMarkerList($user_id);
-
-
 
         return $this->render('AppBundle:Map:map.html.twig', array(
             'user' => $user_id,
@@ -49,6 +47,7 @@ class MapController extends Controller
 
     /**
      * @Route("/markers/{id}", name="markers")
+     * AJAX method
      */
     public function markersAction(int $id)
     {
@@ -57,7 +56,7 @@ class MapController extends Controller
     }
 
     /**
-     * get markers
+     * get markers by user id
      *
      * @param int $user_id
      * @return array
@@ -68,11 +67,10 @@ class MapController extends Controller
             ->getRepository(Marker::class);
 
         $query = $repository->createQueryBuilder('m')
-            ->where('m.userId = '.$user_id)
+            ->where('m.userId = ' . $user_id)
             ->orderBy('m.name', 'ASC')
             ->getQuery();
 
         return $query->getArrayResult();
     }
-
 }

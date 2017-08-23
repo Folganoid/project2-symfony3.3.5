@@ -18,14 +18,14 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class PictureController extends Controller
 {
-
     /**
      * @Route("/picture_by_marker_id/{id}", name="picture_by_marker_id")
+     * AJAX method
+     * return JSON
      */
-    public function pictureAction($id, SerializerInterface $serializer)
+    public function pictureAction(int $id, SerializerInterface $serializer)
     {
         $repository = $this->getDoctrine()->getRepository(Picture::class);
-
         $picture = $repository->findBy(
             array('markerId' => $id)
         );
@@ -38,10 +38,9 @@ class PictureController extends Controller
     /**
      * @Route("/img_edit/{id}", name="image_edit")
      */
-    public function imgEditAction($id, Request $request)
+    public function imgEditAction(int $id, Request $request)
     {
         $repository = $this->getDoctrine()->getRepository(Picture::class);
-
         $picture = $repository->findOneBy(
             array('id' => $id)
         );
@@ -50,9 +49,18 @@ class PictureController extends Controller
             throw $this->createNotFoundException('Unable to find Picture.');
         }
 
-        $form = $this->createForm(ImgEditType::class, new Picture(), ['id' => $id, 'name' => $picture->getName(), 'markerId' => $picture->getMarkerId(), 'ownerId' => $this->getOwnerId($picture->getMarkerId())]);
+        $form = $this->createForm(ImgEditType::class, new Picture(), [
+                'id' => $id, 'name' => $picture->getName(),
+                'markerId' => $picture->getMarkerId(),
+                'ownerId' => $this->getOwnerId($picture->getMarkerId())
+            ]
+        );
+
         $form->handleRequest($request);
 
+        /**
+         * image edit form submit
+         */
         if ($form->isSubmitted()) {
 
             $marker = $form->getData();
@@ -70,6 +78,9 @@ class PictureController extends Controller
             $em = $this->getDoctrine()->getManager();
             $pic = $em->getRepository(Picture::class)->find($id);
 
+            /**
+             * save button
+             */
             if ($form->get('save')->isClicked()) {
 
                 $pic->setName($marker->getName());
@@ -79,6 +90,9 @@ class PictureController extends Controller
                 $em->flush();
             }
 
+            /**
+             * delete button
+             */
             if ($form->get('delete')->isClicked()) {
                 $fs = new Filesystem();
                 $fs->remove([$this->getParameter('pictures_directory') . '/' . $picture->getFilename()]);
@@ -95,14 +109,13 @@ class PictureController extends Controller
         ));
     }
 
-
     /**
      * get user id by marker id
      *
      * @param $markerId
      * @return mixed
      */
-    private function getOwnerId($markerId)
+    private function getOwnerId(int $markerId)
     {
         $repository = $this->getDoctrine()->getRepository(Marker::class);
         $marker = $repository->findOneBy(

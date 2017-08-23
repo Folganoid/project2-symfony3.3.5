@@ -8,19 +8,18 @@
     <link rel="stylesheet" href="{{ asset('css/components/slider.css') }}">
 
     <script type="text/javascript" src="{{ asset('js/map.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/comment.js') }}"></script>
 
     <div class="uk-container">
         <div class="uk-tile-primary">
             <h3 align="center">Map {{ username }}</h3>
         </div>
         <div class="uk-container">
-            <div class="uk-align-right uk-text-small">You can choose another user:
-            <select class="uk-text-small" id="userlist">
-                {% for items in userlist %}
-                    <option value="{{ items[0] }}">{{ items[1] }}</option>
-                {% endfor %}
-            </select>
+            <div class="uk-align-right uk-text-small">You could choose another user:
+                <select class="uk-text-small" id="userlist">
+                    {% for items in userlist %}
+                        <option value="{{ items[0] }}">{{ items[1] }}</option>
+                    {% endfor %}
+                </select>
                 <button class="uk-button-mini uk-button" id="userlistbut">Go</button>
             </div>
         </div>
@@ -79,7 +78,4 @@
     <div class="uk-container">
         <ul id="map_comments" class="uk-comment-list"></ul>
     </div>
-
-
-
 {% endblock %}

@@ -19,15 +19,15 @@
                 <td>maplink</td>
             </tr>
             {% for usr in user %}
-            <tr>
-                <td class="uk-text-center">{{ usr.id }}</td>
-                <td><a href="/profile/{{ usr.id }}">{{ usr.username }}</a></td>
-                <td>{{ usr.email }}</td>
-                <td class="uk-text-center">{{ usr.role }}</td>
-                <td>{{ usr.password }}</td>
-                <td class="uk-text-center"><a href="/map/{{ usr.id }}">go to map</a></td>
+                <tr>
+                    <td class="uk-text-center">{{ usr.id }}</td>
+                    <td><a href="/profile/{{ usr.id }}">{{ usr.username }}</a></td>
+                    <td>{{ usr.email }}</td>
+                    <td class="uk-text-center">{{ usr.role }}</td>
+                    <td>{{ usr.password }}</td>
+                    <td class="uk-text-center"><a href="/map/{{ usr.id }}">go to map</a></td>
 
-            </tr>
+                </tr>
             {% endfor %}
         </table>
 

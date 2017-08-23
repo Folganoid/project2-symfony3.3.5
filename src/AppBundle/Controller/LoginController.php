@@ -15,7 +15,6 @@ class LoginController extends Controller
     public function loginAction(Request $request, AuthenticationUtils $authenticationUtils)
     {
         $errors = $authenticationUtils->getLastAuthenticationError();
-
         $lastUserName = $authenticationUtils->getLastUsername();
 
         return $this->render('AppBundle:Login:login.html.twig', array(
@@ -27,8 +26,7 @@ class LoginController extends Controller
     /**
      * @Route("/logout", name="logout")
      */
-    public function logoutAction() {
-
+    public function logoutAction()
+    {
     }
-
 }

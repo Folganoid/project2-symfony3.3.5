@@ -21,6 +21,9 @@ class DataController extends Controller
         $form = $this->createForm(MarkerType::class, $marker);
         $form->handleRequest($request);
 
+        /**
+         * new marker form submit
+         */
         if ($form->isSubmitted() && $form->isValid()) {
 
             $marker = $form->getData();
@@ -30,15 +33,17 @@ class DataController extends Controller
             $em->persist($marker);
             $em->flush();
 
-            $uri = $this->generateUrl('map', array('user_id' => $this->getUser()->getId()));
-
-            return $this->redirect($uri);
+            // redirect to user map page
+            return $this->redirect($this->generateUrl('map', array('user_id' => $this->getUser()->getId())));
         }
 
         $picture = new Picture();
         $form2 = $this->createForm(PictureType::class, $picture);
         $form2->handleRequest($request);
 
+        /**
+         * new picture form submit
+         */
         if ($form2->isSubmitted() && $form2->isValid()) {
 
             $picture = $form2->getData();
@@ -49,7 +54,7 @@ class DataController extends Controller
             }
 
             $file = $picture->getFilename();
-            $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+            $fileName = md5(uniqid()) . '.' . $file->guessExtension(); // create unique filename
 
             $file->move(
                 $this->getParameter('pictures_directory'),

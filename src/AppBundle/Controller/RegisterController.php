@@ -9,10 +9,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * Class RegisterController
+ * @package AppBundle\Controller
+ */
 class RegisterController extends Controller
 {
     /**
      * @Route("/register", name="register")
+     * users registration
      */
     public function registerAction(Request $request, UserPasswordEncoderInterface $encoder)
     {
@@ -22,21 +27,21 @@ class RegisterController extends Controller
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
+        /**
+         * create user form submit
+         */
         if ($form->isSubmitted() && $form->isValid()) {
-            // create the user
+
             $user->setPassword($encoder->encodePassword($user, $user->getPassword()));
             $user->setRole(1);
-
             $em->persist($user);
             $em->flush();
 
             return $this->redirectToRoute('login');
-
         }
 
         return $this->render('AppBundle:Register:register.html.twig', array(
             'form' => $form->createView()
         ));
     }
-
 }

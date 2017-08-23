@@ -31,6 +31,9 @@ function initMap() {
         center: cntr
     });
 
+    /**
+     * add markers on the map
+     */
     for (i = 0; i < markersArray.length; i++) {
         window['marker' + markersArray[i].id] = new google.maps.Marker({
             map: map,
@@ -64,7 +67,6 @@ function initMap() {
     function addMarker(vr, cnt, owner, name) {
 
         vr.addListener('click', function () {
-
             toggleBounce();
             curM = cnt;
             getPics(cnt, owner);
@@ -142,7 +144,10 @@ function getComments(cnt, name) {
     for (i = 0; i < comArray.length; i++) {
 
         var forAdmin = '';
-        if ($('#map').attr('admin') == 1) forAdmin = ' <button class="delcom uk-button uk-button-mini uk-button-danger" number="' + comArray[i].id + '">Remove</button>';
+        if ($('#map').attr('admin') == 1) {
+            forAdmin = ' <button class="delcom uk-button uk-button-mini uk-button-danger" number="' +
+                comArray[i].id + '">Remove</button>';
+        };
 
         list += '<li><div>' +
             '<b>' + comArray[i].username + '</b>' +
@@ -158,6 +163,9 @@ function getComments(cnt, name) {
         }
     }
 
+    /**
+     * reset
+     */
     $('#star_title').empty();
     $('#marker_title').empty();
     $('#map_comments').empty();
@@ -169,6 +177,9 @@ function getComments(cnt, name) {
 
     $('#map_comments').append(list);
 
+    /**
+     * delete comments (for admin only)
+     */
     $('.delcom').click(function () {
         $.ajax({
             type: "GET",
